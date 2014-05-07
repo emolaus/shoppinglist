@@ -24,6 +24,7 @@
             $scope.send = function send() {
                 console.log("Trying to add item " + $scope.newItem);
                 socket.emit('addItem', $scope.newItem);
+                $scope.newItem = "";
             }
             
             $scope.remove = function remove(itemName) {
