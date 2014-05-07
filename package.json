@@ -1,0 +1,13 @@
+{
+  "name": "chat-example",
+  "version": "0.0.0",
+  "description": "A collaborative shopping list app with real-time updates",
+  "main": "server.js",
+  "repository": "",
+  "author": "Mattias Olausson",
+  "dependencies": {
+    "async": "~0.2.8",
+    "express": "~3.2.4",
+    "socket.io": "~0.9.14"
+  }
+}
