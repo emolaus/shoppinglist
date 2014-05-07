@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" ng-app>
+  <head>
+    <title>Test page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function AppController ($scope) {
+            var socket = io.connect();
+            $scope.items = [];
+            
+            socket.on('connect', function () {
+                  console.log("socket connection");
+            });
+            socket.on('list', function (list) {
+                $scope.items = list;
+                $scope.$apply();
+            });
+            socket.on('updatedList', function (list) {
+                $scope.items = list;
+                $scope.$apply();
+            });
+            
+            $scope.send = function send() {
+                console.log("Trying to add item " + $scope.newItem);
+                socket.emit('addItem', $scope.newItem);
+            }
+            
+            $scope.remove = function remove(itemName) {
+                console.log("Remove called on " + itemName);
+                socket.emit('removeItem', itemName);
+            }
+        } 
+    </script>  
+      
+  </head>
+  <body>
+    <div class="container" ng-controller="AppController">
+
+        <form ng-submit="send()">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="newItem" placeholder="Add shopping item">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" ng-disabled="!newItem">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </span>
+            </div><!-- /input-group -->
+        </form>
+
+  
+        <div class="list-group">
+          <a href="javascript:void(0);" class="list-group-item listItem" ng-repeat="item in items" ng-click='remove(item)' ng-bind-template="{{item}}"></a>
+
+        </div>
+
+
+    </div> <!--  <div class="container" ng-controller="AppController"> -->
+    
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/angular.min.js"></script>
+    <script>
+        $(".listItem").click(function () {console.log("Item clicked: " + this.val());});
+    </script>
+  </body>
+</html>
